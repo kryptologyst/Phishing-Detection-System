@@ -1,0 +1,95 @@
+# Default configuration for phishing detection system
+defaults:
+  - models: random_forest
+  - experiments: default
+  - _self_
+
+# Data configuration
+data:
+  synthetic:
+    n_samples: 10000
+    n_features: 15
+    test_size: 0.2
+    random_state: 42
+  
+  real:
+    path: "data/raw/phishing_dataset.csv"
+    columns:
+      url: "url"
+      label: "is_phishing"
+    
+  preprocessing:
+    min_url_length: 5
+    max_url_length: 2048
+    anonymize_pii: true
+    hash_ips: true
+
+# Feature engineering
+features:
+  url:
+    length: true
+    num_dots: true
+    num_hyphens: true
+    num_underscores: true
+    num_special_chars: true
+    has_https: true
+    has_www: true
+    path_depth: true
+    query_length: true
+    
+  domain:
+    age_days: true
+    suspicious_tld: true
+    subdomain_count: true
+    domain_length: true
+    
+  content:
+    text_length: true
+    suspicious_keywords: true
+    form_count: true
+    external_links: true
+
+# Model configuration
+model:
+  name: "random_forest"
+  params:
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 5
+    min_samples_leaf: 2
+    random_state: 42
+
+# Evaluation metrics
+evaluation:
+  metrics:
+    - "aucpr"
+    - "precision_at_k"
+    - "f1_score"
+    - "false_positive_rate"
+    - "alert_volume"
+  
+  k_values: [10, 50, 100]
+  target_precision: 0.9
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/phishing_detection.log"
+
+# Device configuration
+device:
+  auto_detect: true
+  fallback_order: ["cuda", "mps", "cpu"]
+  batch_size: 32
+
+# Privacy and safety
+privacy:
+  anonymize_outputs: true
+  redact_sensitive: true
+  max_log_length: 100
+  
+safety:
+  max_prediction_batch: 1000
+  rate_limit_per_minute: 60
+  input_validation: true

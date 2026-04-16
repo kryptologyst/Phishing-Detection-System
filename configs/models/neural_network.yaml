@@ -1,0 +1,26 @@
+# Neural Network model configuration
+_target_: src.models.neural_network.NeuralNetworkDetector
+
+# Model architecture
+hidden_layers: [128, 64, 32]
+dropout_rate: 0.3
+activation: "relu"
+output_activation: "sigmoid"
+
+# Training parameters
+epochs: 100
+batch_size: 32
+learning_rate: 0.001
+optimizer: "adam"
+loss: "binary_crossentropy"
+metrics: ["accuracy", "precision", "recall"]
+
+# Regularization
+l2_regularization: 0.01
+early_stopping:
+  patience: 10
+  restore_best_weights: true
+
+# Data preprocessing
+scaling: "standard"
+validation_split: 0.2

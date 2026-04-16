@@ -1,0 +1,22 @@
+# XGBoost model configuration
+_target_: src.models.xgboost_detector.XGBoostDetector
+
+# Model parameters
+n_estimators: 200
+max_depth: 8
+learning_rate: 0.1
+subsample: 0.8
+colsample_bytree: 0.8
+reg_alpha: 0.1
+reg_lambda: 1.0
+random_state: 42
+n_jobs: -1
+
+# Early stopping
+early_stopping_rounds: 20
+eval_metric: "aucpr"
+
+# Training parameters
+fit_params:
+  eval_set: null
+  verbose: false
